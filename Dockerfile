@@ -1,5 +1,5 @@
 # Dockerfile for icinga2 with icingaweb2
-# https://github.com/jjethwa/icinga2
+# https://github.com/emtek-at/icinga2
 
 FROM debian:buster
 
@@ -54,10 +54,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    
-RUN sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf \
-    && sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/default-ssl.conf \
-    && /etc/init.d/apache2 restart
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && curl -s https://packages.icinga.com/icinga.key \
@@ -120,13 +116,10 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     && true
 
 ADD content/ /
-    
+
 # Final fixes
 RUN true \
     && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
-    && sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/icingaweb2-ssl-redirect.conf \
-    && sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/icingaweb2-ssl.conf \
-    && /etc/init.d/apache2 restart \
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mv /etc/icinga2/ /etc/icinga2.dist \
     && mkdir -p /etc/icinga2 \
