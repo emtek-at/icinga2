@@ -126,7 +126,7 @@ RUN true \
     && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
     && sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/icingaweb2-ssl-redirect.conf \
     && sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/icingaweb2-ssl.conf \
-    && /etc/init.d/apache2 restart
+    && /etc/init.d/apache2 restart \
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mv /etc/icinga2/ /etc/icinga2.dist \
     && mkdir -p /etc/icinga2 \
