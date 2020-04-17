@@ -53,10 +53,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     wget \
     && apt-get --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
     && apt-get clean \
-    && sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/icingaweb2-ssl-redirect.conf \
-    && sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/icingaweb2-ssl.conf \
-    && /etc/init.d/apache2 restart \
     && rm -rf /var/lib/apt/lists/*
+    
+RUN sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/icingaweb2-ssl-redirect.conf \
+    && sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/icingaweb2-ssl.conf \
+    && /etc/init.d/apache2 restart
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && curl -s https://packages.icinga.com/icinga.key \
