@@ -2,6 +2,9 @@
 
 . /opt/helpers
 
+sed -i "s/80/$APACHE_HTTP_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*
+sed -i "s/443/$APACHE_HTTPS_PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*
+
 service apache2 start
 
 # Allow any signal which would kill a process to stop server
